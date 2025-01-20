@@ -4,6 +4,7 @@ import { Container, Header, Navigator, Logo, List, Item} from "./styles.tsx";
 // import Nlogo from './assets/logo.jpeg'
 
 import Naruto from './assets/naruto.png'
+import { data } from "react-router-dom";
 
 function Home(){
     let page = 1
@@ -18,13 +19,20 @@ function Home(){
     
         })
         .then(data => {
-            console.log(data)
+        
+           console.log(data.characters)
+           return data
+        
         })
         .catch(error => {
             console.error("There's a problem with your fetch")
         })
+
+       
+
     }
     Load()
+    
 
     function NextPage(){
         
@@ -38,12 +46,14 @@ function Home(){
     
         })
         .then(data => {
-            console.log(data)
+        
         })
         .catch(error => {
             console.error("There's a problem with your fetch")
         })
+        
     }
+
 
     function BackPage(){
         page > 1 ? page-- : page = 1; // this is to page number don't grab value 0 or below
@@ -62,9 +72,8 @@ function Home(){
         .catch(error => {
             console.error("There's a problem with your fetch")
         })
-    }
 
-
+    }  
     return(
         <>
         <Header>
@@ -78,7 +87,9 @@ function Home(){
             </Navigator>
         </Header>
         <Container>
-            <img src={Naruto} alt="" /> 
+        
+        {
+        }
         </Container>
 
         <button onClick={() =>NextPage()}>next</button>
