@@ -11,6 +11,14 @@ export const Container = styled.div`
     width: 100vw;
     display: flex;
     justify-content: center;
+    color: #fff;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    box-sizing: border-box;
+    margin: 0px -20px;
 
 `
 
@@ -56,5 +64,27 @@ export const Item = styled.li`
     min-width: 40px;
     list-style: none;
     color: #fff;
+
+
+
+`
+
+
+export const Card = styled.div`
+  box-sizing: border-box;
+  width: 50%;
+  margin-bottom: 20px;
+  padding: 0px 20px;
+  
+  `
+
+export const Content = styled.div`
+    color: #242424;
+  background-color: #1bbefe;
+  font-weight: 600;
+  text-align: center;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 10px;
 
 `

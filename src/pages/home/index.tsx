@@ -1,79 +1,48 @@
-import React from "react"
-import { Container, Header, Navigator, Logo, List, Item} from "./styles.tsx";
+import React, { useState, useEffect } from "react"
+
+import { Container, Header, Navigator, Logo, List, Item, Card} from "./styles.tsx";
 
 // import Nlogo from './assets/logo.jpeg'
 
-import Naruto from './assets/naruto.png'
-import { data } from "react-router-dom";
+// import Naruto from './assets/naruto.png'
 
 function Home(){
-    let page = 1
-    
-    async function Load(){
-        fetch(`https://narutodb.xyz/api/character?page=${page}&limit=10`)
-        .then(response => {
-            if(!response){
+
+    const [page, setPage] = useState(1);
+    const [characters, setCharacters] = useState([]);
+
+    async function Load(currentPage: number){
+        try{
+            const response = await fetch(`https://narutodb.xyz/api/character?page=${currentPage}&limit=10`)
+            if(!response.ok){
                 throw new Error("Had a fail") 
             }
-            return response.json();
-    
-        })
-        .then(data => {
-        
-           console.log(data.characters)
-           return data
-        
-        })
-        .catch(error => {
-            console.error("There's a problem with your fetch")
-        })
+            const data = await response.json();
 
-       
 
+            setCharacters(data.characters || []);
+        } catch(error){
+            console.log("There's a problem with your fetch")
+        }
+        
+      
     }
-    Load()
+    useEffect(() => {
+        Load(page);
+    },[page]);
     
 
     function NextPage(){
         
-        page++
-        fetch(`https://narutodb.xyz/api/character?page=${page}&limit=10`)
-        .then(response => {
-            if(!response){
-                throw new Error("Had a fail") 
-            }
-            return response.json();
-    
-        })
-        .then(data => {
+        setPage((prevPage: number) => prevPage + 1 )
         
-        })
-        .catch(error => {
-            console.error("There's a problem with your fetch")
-        })
-        
-    }
-
+    };
 
     function BackPage(){
-        page > 1 ? page-- : page = 1; // this is to page number don't grab value 0 or below
-        
-        fetch(`https://narutodb.xyz/api/character?page=${page}&limit=10`)
-        .then(response => {
-            if(!response){
-                throw new Error("Had a fail") 
-            }
-            return response.json();
-    
-        })
-        .then(data => {
-            console.log(data)
-        })
-        .catch(error => {
-            console.error("There's a problem with your fetch")
-        })
+        setPage((prevPage: number) => prevPage > 1 ? prevPage -1 : 1); // this is to page number don't grab value 0 or below 
+        Load(page);
+    };
 
-    }  
     return(
         <>
         <Header>
@@ -85,11 +54,18 @@ function Home(){
                     <Item>Contact</Item>
                 </List>
             </Navigator>
+
         </Header>
         <Container>
-        
-        {
-        }
+            
+            {characters.map(character =>(
+
+                <Card key={character.id}>
+                   <h3>{character.name}</h3>
+                   <h2>{character.uniqueTraits}</h2>
+
+                </Card>
+            ))}
         </Container>
 
         <button onClick={() =>NextPage()}>next</button>
